@@ -1,5 +1,5 @@
 <script setup>
-    import { reactive, onMounted } from 'vue'
+    import { reactive, onMounted, watch } from 'vue'
     import { UploadFilled } from '@element-plus/icons-vue'
 
     const emit = defineEmits(['applyClicked']);
@@ -7,14 +7,14 @@
     // layout state
     const state = reactive({
         pageLayout: 'PORTRAIT',
-        pageMargins: 'MEDIUM',
+        pageMargins: 'MEDIUM', //NONE,THIN,MEDIUM,LARGE,EXTRA_LARGE
         pageGrid: {
             rows: 1,
             cols: 1,
-            spacing: 'MEDIUM'
+            spacing: 'MEDIUM' //NONE,THIN,MEDIUM,LARGE,EXTRA_LARGE
         },
         images: {
-            fit: 'FIT_WIDTH',
+            fit: 'cover', //fill,contain,cover,none,scale-down
             autoRotate: true,
             zoom: 100
         },
@@ -22,20 +22,35 @@
     })
 
     function onApply(){
-        emit('applyClicked', { ...state });
+        emit('applyClicked', JSON.parse(JSON.stringify(state)));
+    }
+    function onPrint(){
+        emit('printClicked');
     }
 
     onMounted(() => {
         onApply();
     });
+
+    watch(
+        state,
+        () => {
+            emit('applyClicked', JSON.parse(JSON.stringify(state)));
+        },
+        { deep: true }
+    );
 </script>
 <template>
     <div class="config-area-outer disp-flex-vertical">
         <p><b>Images</b></p>
         <div>
             <el-upload
+                action=""
+                :auto-upload="false"
+                list-type="picture"
                 class=""
                 drag
+                v-model:file-list="state.imageList"
                 multiple
             >
                 <el-icon class="el-icon--upload"><upload-filled /></el-icon>
@@ -86,11 +101,13 @@
         <p><b>Images</b></p>
         <div class="disp-marginl-20 disp-marginv-10 disp-font-sm func-image-config-grid">
             <span class="">Fit</span>
+            <!-- fill,contain,cover,none,scale-down -->
             <el-radio-group v-model="state.images.fit" size="small" >
-                <el-radio-button label="Center" value="CENTER" />
-                <el-radio-button label="Fit Width" value="FIT_WIDTH" />
-                <el-radio-button label="Fit Height" value="FIT_HEIGHT" />
-                <el-radio-button label="Stretch" value="STRETCH" />
+                <el-radio-button label="None" value="none" />
+                <el-radio-button label="Cover" value="cover" />
+                <el-radio-button label="Contain" value="contain" />
+                <el-radio-button label="Scale down" value="scale-down" />
+                <el-radio-button label="Fill" value="fill" />
             </el-radio-group>                    
             <span class="">Auto-rotate</span> 
             <el-switch v-model="state.images.autoRotate" size="small"/>    
@@ -101,7 +118,7 @@
             style="display:flex; flex-direction: row-reverse; gap:10px; margin-top:20px; margin-bottom:10px;">
             <el-button>Reset</el-button>
             &nbsp;
-            <el-button type="primary">Print</el-button>
+            <el-button type="primary" @click="onPrint">Print</el-button>
             <el-button @click="onApply">Apply</el-button>
         </div>
     </div>
@@ -109,11 +126,10 @@
 <style>
     .config-area-outer {
         min-width: 30vw;
+        max-width: 30vw;
       
         padding: 20px;
         border: 1px solid #ddd;
-        margin-bottom: 10px;
-
     }
     .func-image-config-grid {
         display: grid;
