@@ -1,0 +1,81 @@
+/* Use a clean, modern font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+/* Apply box-sizing fix globally */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Root font and smooth scrolling */
+html {
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Basic body styling */
+body {
+  color: #212529;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+/* A simple container class */
+.container {
+  max-width: 1200px;
+  width: 100%;
+  padding: 1rem;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* Links */
+a {
+  color: #0252a7;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #07478b;
+  text-decoration: underline;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background: #007bff;
+  color: white;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}

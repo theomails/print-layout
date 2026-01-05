@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Viewer</title>
+    <style>
+        #image-container {
+            width: 300px;
+            height: 300px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #eee;
+        }
+        #image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="image-input" accept="image/*">
+    <div id="image-container">
+        <img id="preview" src="" alt="Preview">
+    </div>
+    <div>
+        <button onclick="setFit('contain')">Contain</button>
+        <button onclick="setFit('cover')">Cover</button>
+        <button onclick="setFit('fill')">Fill</button>
+        <button onclick="setFit('none')">None</button>
+        <button onclick="setFit('scale-down')">Scale-down</button>
+        <button onclick="printContainer()">Print</button>
+    </div>
+
+    <script>
+        document.getElementById('image-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function setFit(fitType) {
+            const img = document.getElementById('preview');
+            img.style.objectFit = fitType;
+            img.style.width = '100%';
+            img.style.height = '100%';
+        }
+
+        function printContainer() {
+            const printWindow = window.open('', '', 'width=600,height=600');
+            printWindow.document.write('<html><head><title>Print</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write('#image-container { width: 300px; height: 300px; border: 2px solid #000; display: flex; justify-content: center; align-items: center; overflow: hidden; background: #eee; }');
+            printWindow.document.write('#image-container img { width: 100%; height: 100%; object-fit: ' + document.getElementById('preview').style.objectFit + '; }');
+            printWindow.document.write('</style></head><body>');
+            printWindow.document.write(document.getElementById('image-container').outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+/* Generic display classes */
+.disp-flex-vertical{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.disp-flex-horizontal{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.disp-flex-grow {
+    flex-grow: 1;
+}
+.disp-font-sm {
+    font-size: 0.9em;
+}
+.disp-font-xs {
+    font-size: 0.8em;
+}
+.disp-font-bold{
+    font-weight: bold;
+}
+.disp-pad-10{
+    padding: 10px;
+}
+.disp-padl-20{
+    padding-left: 20px;
+}
+.disp-margint-20{
+    margin-top: 20px;
+}
+.disp-marginl-20{
+    margin-left: 20px;
+}
+.disp-marginv-10{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
