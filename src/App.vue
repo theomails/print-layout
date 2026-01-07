@@ -17,7 +17,7 @@ import AppMain from '@/components/views/AppMain.vue';
   <footer class="app-footer">
     <div data-v-45d367c0="" class="mb-2 text-gray-800">
       <a data-v-45d367c0="" class="cursor-pointer">Privacy Policy</a> &nbsp; <a data-v-45d367c0="" class="cursor-pointer">Terms of Service</a></div> 
-      Copyright © AppLib Tech. All rights reserved.
+      Copyright © Nano Apps Net. All rights reserved.
   </footer>
 </template>
 

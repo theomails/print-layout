@@ -34,41 +34,44 @@
 
     @media print {
         html, body {
-            border: 1px solid white;
-            height: 99%;
-            page-break-after: avoid;
-            page-break-before: avoid;
+            min-height: none;
+            margin: 0;
+            padding: 0;
+            height: 0px;
+            width: 0px;
         }
-        footer {page-break-after: avoid;}
+
         html, body * {
+            height: 0px;
+            width: 0px;
             visibility: hidden;
         }
+        
 
         .preview-page,
         .preview-page * {
             visibility: visible;
         }
 
-        .preview-page {
+        .preview-area-outer {
             position: absolute;
-            left: 0;
-            top: 0;
+            top: 0px;
+            left: 0px;
+            margin: 0px;
+            padding: 0px;
+            overflow: visible;
+        }
+        .preview-page {
             width: 210mm;
             height: 297mm;
-            overflow: hidden;
+            overflow: visible;
             margin: 0;
             border: 0px;
             padding: 0px;
             box-shadow: none;
         }
-        .preview-page {
-            break-after: page;
-        }
-        .preview-page:first-child {
-            break-before: avoid;
-        }
-        .preview-page:last-child {
-            break-after: avoid;
+        .preview-image {
+            border: 0px;
         }
     }
 </style>
