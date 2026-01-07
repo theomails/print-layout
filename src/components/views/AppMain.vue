@@ -38,7 +38,6 @@
             height: 99%;
             page-break-after: avoid;
             page-break-before: avoid;
-            overflow: hidden;
         }
         footer {page-break-after: avoid;}
         html, body * {

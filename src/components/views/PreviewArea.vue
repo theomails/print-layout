@@ -1,29 +1,9 @@
 <script setup>
+    import { computed } from 'vue';
+
     const props = defineProps({
         config: Object
     });
-
-    const v_margins_mm = {
-        NONE: 0,
-        THIN: 10,
-        MEDIUM: 30,
-        LARGE: 50,
-        EXTRA_LARGE: 80
-    };
-    const h_margins_mm = {
-        NONE: 0,
-        THIN: 10,
-        MEDIUM: 30,
-        LARGE: 50,
-        EXTRA_LARGE: 80
-    };
-    const spacing_mm = {
-        NONE: 0,
-        THIN: 10,
-        MEDIUM: 30,
-        LARGE: 50,
-        EXTRA_LARGE: 80
-    };
 
     function calcPageBounds(){
         let config = props.config;
@@ -40,13 +20,15 @@
         let rows = config.pageGrid?.rows;
         let cols = config.pageGrid?.cols;
         if(!rows || !cols) return {};
-        let marginV = v_margins_mm[config.pageMargins]; //Change based on layout?
-        let marginH = h_margins_mm[config.pageMargins]; //Change based on layout?
-        let spacing = spacing_mm[config.pageGrid.spacing];
+        let marginV = config.pageMargins;
+        let marginH = config.pageMargins;
+        let spacing = config.pageGrid.spacing;
         let pageHeight = config.pageLayout=='PORTRAIT'?297:210;
         let pageWidth = config.pageLayout=='PORTRAIT'?210:297;
         let imgHeight = (pageHeight - 2*marginV - (rows-1)*spacing)/rows;
         let imgWidth = (pageWidth - 2*marginH - (cols-1)*spacing)/cols;
+        imgHeight = imgHeight<0?1:imgHeight;
+        imgWidth = imgWidth<0?1:imgWidth;
         return {
             top: marginV + (row-1)*(spacing+imgHeight),
             left: marginH + (col-1)*(spacing+imgWidth),
@@ -54,26 +36,34 @@
             height: imgHeight
         };
     }
-    function calcImage(row, col){
+    function calcImage(pnum, row, col){
         let config = props.config;
+        let rows = config.pageGrid?.rows;
         let cols = config.pageGrid?.cols;
         let avlImages = config.imageList.length;
-        let index = (row-1)*cols + col;
+        let index = (pnum-1)*rows*cols + (row-1)*cols + col;
 
         let image = index<=avlImages?config.imageList[index-1]:{};
         return image;
     }
+
+    const totalPages = computed(() =>
+        Math.ceil(
+            Math.max(props.config.imageList.length, 1) /
+            (props.config?.pageGrid?.rows * props.config?.pageGrid?.cols)
+        )
+    )
 </script>
 <template>
     <div class="preview-area-outer" v-if="config?.pageGrid?.rows && config?.pageGrid?.cols">
-        <div class="preview-page"
+        <div class="preview-page" v-for="pnum in totalPages" :ref="'page-' + pnum"
             :style="{
                 width: calcPageBounds().width+'mm',
                 height: calcPageBounds().height+'mm'
             }"
         >
-            <div class="preview-image-row" v-for="row in config.pageGrid?.rows||1" :key="'r-'+row"> 
-                <div class="preview-image"  v-for="col in config.pageGrid?.cols||1" :key="'c-'+col"
+            <div class="preview-image-row" v-for="row in config.pageGrid?.rows||1" :key="'img-row-'+row"> 
+                <div class="preview-image"  v-for="col in config.pageGrid?.cols||1" :key="'img-col-'+col"
                         :style="{
                             top: calcBounds(row, col).top+'mm',
                             left: calcBounds(row, col).left+'mm',
@@ -81,10 +71,10 @@
                             height: calcBounds(row, col).height+'mm'
                         }"
                     >
-                        <el-image v-if="calcImage(row,col).url"
+                        <el-image v-if="calcImage(pnum, row,col).url"
                             :fit="config.images.fit"
-                            :key="calcImage(row,col).uuid"
-                            :src="calcImage(row,col).url"
+                            :key="calcImage(pnum, row,col).uuid"
+                            :src="calcImage(pnum, row,col).url"
                             style="width: 100%; height: 100%;"
                         />
                 </div>
@@ -95,7 +85,7 @@
 <style>
     .preview-area-outer {
         flex-grow: 1;
-        min-height: 70vh;
+        max-height: 320mm;
         max-width: 220mm;
         padding: 10px;
 

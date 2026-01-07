@@ -9,7 +9,7 @@ import AppMain from '@/components/views/AppMain.vue';
       <div class="logo-icon"></div>
       <div class="logo-text">NANO<br/>APPS</div>      
     </div>
-    <h4>Print Layout</h4>
+    <h4>Print Grid</h4>
   </header>
   <main class="app-content">
     <AppMain></AppMain>
@@ -45,6 +45,7 @@ import AppMain from '@/components/views/AppMain.vue';
 }
 .logo-outer {
   display: flex;
+  margin-left: 10px;
   background-color: white;
   padding: 5px;
   padding-left: 0px;
@@ -67,7 +68,7 @@ import AppMain from '@/components/views/AppMain.vue';
   font-weight: bold;
 }
 .app-header h1,h2,h3,h4{
-    margin-left: 20px;
+    margin-left: 30px;
     line-height: 2.8;
     color: #F4F7FB;
 }
