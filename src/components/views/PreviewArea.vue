@@ -100,7 +100,7 @@
         padding: 10px;
 
         overflow: auto;        
-        background-color: gray;
+        background-color: #3A3F47;
         border: 1px solid #666;
 
     }
@@ -108,8 +108,8 @@
         position: relative;
         margin: 10px auto;
         width: 210mm;
-        height: 297mm;
-        background-color: white;
+        height: 282mm;
+        background-color: #F7FAFC;
         border: 1px solid #333;
         box-shadow:  0 4px 8px rgba(0, 0, 0, 0.1), 
                 0 1px 3px rgba(0, 0, 0, 0.05);

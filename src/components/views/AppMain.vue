@@ -27,8 +27,21 @@
         align-items: stretch;
     }
 
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
     @media print {
-        body * {
+        html, body {
+            border: 1px solid white;
+            height: 99%;
+            page-break-after: avoid;
+            page-break-before: avoid;
+            overflow: hidden;
+        }
+        footer {page-break-after: avoid;}
+        html, body * {
             visibility: hidden;
         }
 
@@ -41,9 +54,22 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 100%;
-            box-shadow: none;
+            width: 210mm;
+            height: 297mm;
+            overflow: hidden;
+            margin: 0;
             border: 0px;
+            padding: 0px;
+            box-shadow: none;
+        }
+        .preview-page {
+            break-after: page;
+        }
+        .preview-page:first-child {
+            break-before: avoid;
+        }
+        .preview-page:last-child {
+            break-after: avoid;
         }
     }
 </style>
